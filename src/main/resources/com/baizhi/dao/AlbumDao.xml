@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.baizhi.dao.AlbumDao">
+    <resultMap id="AlbumResultMap" type="com.baizhi.entity.Album">
+        <id property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="coverImg" column="coverImg"/>
+        <result property="count" column="count"/>
+        <result property="score" column="score"/>
+        <result property="author" column="author"/>
+        <result property="broadCast" column="broadCast"/>
+        <result property="brief" column="brief"/>
+        <result property="publishData" column="publishData"/>
+        <collection property="children" javaType="java.util.List" ofType="com.baizhi.entity.Chapter">
+            <id property="id" column="pid"/>
+            <result property="name" column="pname"/>
+            <result property="url" column="url"/>
+            <result property="size" column="size"/>
+            <result property="duration" column="duration"/>
+            <result property="albumId" column="albumId"/>
+        </collection>
+    </resultMap>
+
+    <select id="getAllAlbum" resultMap="AlbumResultMap">
+      select t1.*,t2.id pid,t2.`name`pname,t2.url,t2.size,t2.duration,t2.albumId from album t1 left join chapter t2 on t2.albumId=t1.id
+    </select>
+
+    <insert id="addAlbum">
+        insert into album values(0,#{name},#{coverImg},#{count},#{score},#{author},#{broadCast},#{brief},SYSDATE())
+    </insert>
+</mapper>
